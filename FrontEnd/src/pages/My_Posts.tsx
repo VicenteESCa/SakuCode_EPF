@@ -9,9 +9,9 @@ import '../theme/My_Posts.css';
 
 const My_Posts: React.FC = () => {
   const [items, setItems] = useState([
-    { id: 1, title: 'i have a question', description: 'detalle comentario 1', expanded: false },
-    { id: 2, title: 'i have a question', description: 'detalle comentario 2', expanded: false },
-    { id: 3, title: 'i have a question', description: 'detalle comentario 3', expanded: false },
+    { id: 1, title: 'i have a question', description: 'detalle post 1', expanded: false },
+    { id: 2, title: 'i have a question', description: 'detalle post 2', expanded: false },
+    { id: 3, title: 'i have a question', description: 'detalle post 3', expanded: false },
   ]);
 
   const toggleExpand = (id: number) => {

@@ -23,19 +23,19 @@ import Footer from '../components/Footer';
 SwiperCore.use([Navigation])
 
 const cardDataProgram=[
-  { id:1, title: 'JavaScript', content:'s', Link:"./Login", imgBackground:probarImage},
-  { id:2, title: 'python', content:'Content for card 2',Link:"./Login", imgBackground:python}, 
-  { id:3, title: 'C', content:'Content for card 3',Link:"",imgBackground:C_Card},   
-  { id:4, title: 'C-Sharp', content:'Content for card 4',link:"",imgBackground: csharp_card },
-  { id:5, title: 'RubyLogo', content:'Content for card 4', Link:"",imgBackground: RubyLogo },
+  { id: 1, title: 'JavaScript', content:'s', Link:"./Login", imgBackground:probarImage},
+  { id: 2, title: 'python', content:'Content for card 2',Link:"./Login", imgBackground:python}, 
+  { id: 3, title: 'C', content:'Content for card 3',Link:"",imgBackground:C_Card},   
+  { id: 4, title: 'C-Sharp', content:'Content for card 4',link:"",imgBackground: csharp_card },
+  { id: 5, title: 'RubyLogo', content:'Content for card 4', Link:"",imgBackground: RubyLogo },
 ];
 const cardDataScience=[
-  { id:1, title: 'DB', content:'s', Link:"./Login", imgBackground:Database},
+  { id: 6, title: 'DB', content:'s', Link:"./Login", imgBackground:Database},
   { id: 7, title: 'IA', content: 'Content for Data card 2', imgBackground:Ia_Background},
   { id: 8, title: 'PcBuildin', content: 'Content for Data card 3', imgBackground:PC_Card},
-  { id:4, title: 'Pc vuildin', content:'Content for card 4'},
-  { id:4, title: 'Card 4', content:'Content for card 4'},
-  { id: 9, title: 'Data Card 4', content: 'Content for Data card 4',},
+  { id: 9, title: 'Pc vuildin', content:'Content for card 4'},
+  { id: 10, title: 'Card 4', content:'Content for card 4'},
+  { id: 11, title: 'Data Card 4', content: 'Content for Data card 4',},
 ];
 const swiperCaract0=
   {

@@ -44,7 +44,7 @@ const My_Toolbar = ({children} : PropsWithChildren)=>{
                             <IonButton color="none"
                                        onClick={()=>setShowPopover(false)}
                                        routerLink="/edit_profile">
-                            <IonLabel> volviendome loco </IonLabel>
+                            <IonLabel style={{color: "white"}}> volviendome loco </IonLabel>
                             </IonButton>
                         </IonList>
                     </IonCard>    

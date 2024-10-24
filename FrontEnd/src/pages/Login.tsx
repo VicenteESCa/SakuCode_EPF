@@ -4,14 +4,36 @@ import '../theme/Login.css';
 import { clsx } from 'clsx';
 import My_Toolbar from '../components/My_Toolbar'
 import Footer from '../components/Footer';
+import { useHistory } from "react-router-dom";
+
+import regionsData from '../assets/regiones_y_comunas.json';
 
 const Login: React.FC = () => {
-  const [isTouched, setIsTouched] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState<boolean>();
+  const history = useHistory();
 
-  const markTouched = () => {
-    setIsTouched(true);
+  const [regions] = useState(regionsData);
+  const [error, setError] = useState<string>("");
+  const [submitIsValid, setSubmitValid] = useState<boolean>();
+
+  const [isTouched, setIsTouched] = useState(false);
+  enum Valid {
+    UNDEFINED,
+    VALID,
+    INVALID,
   };
+
+ const [formData, setFromData] = useState({
+      userName: false,
+      region: '',
+      comuna: '',
+      rut: {valid: Valid.UNDEFINED, value: ''},
+      email: {valid: Valid.UNDEFINED, value: ''},
+      password: {valid: Valid.UNDEFINED, value: ''},
+      confirmPassword: {valid: Valid.UNDEFINED, value: ''},
+      termsAndConds: false,
+  });
+
+  const MIN_PASSWORD = 6;
 
   const Is_Email = (email: string) => {
     return email.match(
@@ -19,15 +41,78 @@ const Login: React.FC = () => {
     );
   }
 
-  const Validate_Email = (event: Event) => {
+  const Validate_Email = (event: any) => {
     const email = (event.target as HTMLTextAreaElement).value;
 
-    setIsEmailValid(undefined);
+    const valid: Valid = ( email == '' ) 
+      ? Valid.UNDEFINED
+      : ( Is_Email(email) !== null )
+        ? Valid.VALID
+        : Valid.INVALID;
 
-    if ( email === '' ) return;
-
-    Is_Email(email) !== null ? setIsEmailValid(true) : setIsEmailValid(false);
+    setFromData({
+      ...formData,
+      email: { valid: valid, value: email }
+    });
   };
+
+  const Validate_Password = (event: any) => {
+    const password = (event.target as HTMLTextAreaElement).value;
+
+    const valid: Valid = ( password == '' ) 
+      ? Valid.UNDEFINED
+      : ( password.length >= MIN_PASSWORD )
+        ? Valid.VALID
+        : Valid.INVALID;
+
+    setFromData({
+      ...formData,
+      password: { valid: valid, value: password }
+    });
+  }
+
+  const Validate_Confirm_Password = (event: any) => {
+    const confirmPassword = (event.target as HTMLTextAreaElement).value;
+
+    const valid: Valid = ( confirmPassword == '' ) 
+      ? Valid.UNDEFINED
+      : ( confirmPassword == formData.password.value )
+        ? Valid.VALID
+        : Valid.INVALID;
+
+    setFromData({
+      ...formData,
+      confirmPassword: { valid: valid, value: confirmPassword }
+    });
+  }
+  const Update_Form = (name: string, value: any) => {
+    setFromData({
+      ...formData,
+      [name]: value
+    });
+  }
+
+  const markTouched = () => {
+    setIsTouched(true);
+  };
+
+  const Validate_Submit = () =>  {
+        console.log(formData);
+      if ( !formData.userName || !formData.region || !formData.comuna || !formData.rut.value ||
+           !formData.termsAndConds || !formData.email.value || !formData.password.value || !formData.confirmPassword.value  ) {
+        setSubmitValid(false);
+        setError("Rellena los campos faltantes.");
+        error
+      } else if (formData.rut.valid != Valid.VALID || formData.email.valid != Valid.VALID ||
+                 formData.password.valid != Valid.VALID || formData.confirmPassword.valid != Valid.VALID) {
+        setSubmitValid(false);
+        setError("algunos campos no son validos.");
+      } else {
+        setSubmitValid(true);
+        history.push("/home");
+      }
+  }
+
 
   return (
     <IonPage>
@@ -39,8 +124,8 @@ const Login: React.FC = () => {
           <IonItem>
             <IonTextarea 
             className={clsx('item-spacing', {
-                'ion-valid'  : isEmailValid,
-                'ion-invalid': isEmailValid === false,
+                'ion-valid'  : formData.email.valid == Valid.VALID,
+                'ion-invalid': formData.email.valid == Valid.INVALID,
                 'ion-touched': isTouched,
             })}
             fill="solid"
@@ -55,8 +140,8 @@ const Login: React.FC = () => {
           <IonItem>
             <IonInput
              className={clsx('item-spacing', {
-                 'ion-valid'  : isEmailValid,
-                 'ion-invalid': isEmailValid === false,
+                 'ion-valid'  : formData.password.valid == Valid.VALID,
+                 'ion-invalid': formData.password.valid == Valid.INVALID,
                  'ion-touched': isTouched,
              })}
              type="password"
@@ -65,7 +150,7 @@ const Login: React.FC = () => {
              labelPlacement="floating"
              helperText="Ingresa tu contraseña"
              errorText="Contraseña invalida"
-             onIonInput={(event) => Validate_Email(event)}
+             onIonInput={(event) => Validate_Password(event)}
              onIonBlur={() => markTouched()}
             >
               <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>

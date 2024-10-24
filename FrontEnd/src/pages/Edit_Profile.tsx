@@ -6,9 +6,30 @@ import Footer from '../components/Footer';
 
 import '../theme/Edit_Profile.css';
 
+import regionsData from '../assets/regiones_y_comunas.json';
+
 const Edit_Profile: React.FC = () => {
+  const [regions] = useState(regionsData);
+  const [error, setError] = useState<string>("");
+  const [submitIsValid, setSubmitValid] = useState<boolean>();
+
   const [isTouched, setIsTouched] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState<boolean>();
+  enum Valid {
+    UNDEFINED,
+    VALID,
+    INVALID,
+  };
+
+ const [formData, setFromData] = useState({
+      userName: false,
+      region: '',
+      comuna: '',
+      rut: {valid: Valid.UNDEFINED, value: ''},
+      email: {valid: Valid.UNDEFINED, value: ''},
+      password: {valid: Valid.UNDEFINED, value: ''},
+      confirmPassword: {valid: Valid.UNDEFINED, value: ''},
+      termsAndConds: false,
+  });
 
   const Is_Email = (email: string) => {
     return email.match(
@@ -16,44 +37,31 @@ const Edit_Profile: React.FC = () => {
     );
   }
 
-  const Validate_Email = (event: Event) => {
+  const Validate_Email = (event: any) => {
     const email = (event.target as HTMLTextAreaElement).value;
 
-    setIsEmailValid(undefined);
+    const valid: Valid = ( email == '' ) 
+      ? Valid.UNDEFINED
+      : ( Is_Email(email) !== null )
+        ? Valid.VALID
+        : Valid.INVALID;
 
-    if ( email === '' ) return;
-
-    Is_Email(email) !== null ? setIsEmailValid(true) : setIsEmailValid(false);
+    setFromData({
+      ...formData,
+      email: { valid: valid, value: email }
+    });
   };
 
-  const Is_Rut = (rut: string) => {
-    return rut.match(
-      /^(\d{1,3}(?:\.\d{1,3}){2}-[\dkK])$/
-    );
-  }
-
-  const [isRutValid, setIsRutValid] = useState<boolean>();
-  const Validate_Rut = (event: Event) => {
-    const rut = (event.target as HTMLTextAreaElement).value;
-
-    setIsRutValid(true);
-
-    if ( rut === '' ) return;
-
-    Is_Rut(rut) !== null ? setIsRutValid(true) : setIsRutValid(false);
-  }
-
-  const Validate_Password = (event: Event) => {
+  const Update_Form = (name: string, value: any) => {
+    setFromData({
+      ...formData,
+      [name]: value
+    });
   }
 
   const markTouched = () => {
     setIsTouched(true);
   };
-
-  const Validate_Submit = () : Boolean =>  {
-      console.log("hola perras");
-      return true;
-  }
 
   return (
     <IonPage>
@@ -65,12 +73,12 @@ const Edit_Profile: React.FC = () => {
               <IonRow>
                   <IonTextarea 
                   className={clsx('item-spacing', {
-                      'ion-valid'  : isEmailValid,
-                      'ion-invalid': isEmailValid === false,
+                      'ion-valid'  : formData.email.valid == Valid.VALID,
+                      'ion-invalid': formData.email.valid == Valid.INVALID,
                       'ion-touched': isTouched,
                   })}
                   fill="solid"
-                  label="Email (obligatorio)"
+                  label="Email"
                   labelPlacement="floating"
                   helperText="Ingresa tu email."
                   errorText="Email invalido."
@@ -80,65 +88,77 @@ const Edit_Profile: React.FC = () => {
               </IonRow>
                   <IonTextarea 
                   className={clsx('item-spacing', {
-                      'ion-valid'  : isEmailValid,
-                      'ion-invalid': isEmailValid === false,
                       'ion-touched': isTouched,
                   })}
                   fill="solid"
-                  label="Email (obligatorio)"
+                  label="Direccion"
                   labelPlacement="floating"
-                  helperText="Ingresa tu email."
-                  errorText="Email invalido."
-                  onIonInput={(event) => Validate_Email(event)}
+                  helperText="Ingresa tu direccion."
                   onIonBlur={() => markTouched()}
                   ></IonTextarea>
             </IonCol>
             <IonCol>
                 <div className="profile_img_box">
-                  <img src="src/assets/img_random.jpg"/>
+                  <img  src="src/assets/img_random.jpg"/>
                 </div>
             </IonCol>
           </IonRow>
           <IonRow>
               <IonTextarea 
               className={clsx('item-spacing', {
-                  'ion-valid'  : isEmailValid,
-                  'ion-invalid': isEmailValid === false,
                   'ion-touched': isTouched,
               })}
               fill="solid"
-              label="Email (obligatorio)"
+              label="Sobre mi"
               labelPlacement="floating"
-              helperText="Ingresa tu email."
-              errorText="Email invalido."
               onIonInput={(event) => Validate_Email(event)}
               onIonBlur={() => markTouched()}
               ></IonTextarea>
           </IonRow>
           <IonRow>
-            <IonCol>
+          <IonCol>
+            <IonItem>
               <IonSelect
               label="Region (obligatorio)"
               fill="solid"
               labelPlacement="floating"
+              onIonChange={e => Update_Form("region", (e.target as HTMLIonSelectElement).value)}
               className={clsx('item-spacing', {
-                  'ion-valid'  : isEmailValid,
-                  'ion-invalid': isEmailValid === false,
                   'ion-touched': isTouched,
               })}
               >
-                <IonSelectOption value="chile">Chile</IonSelectOption>
-                <IonSelectOption value="peru">Peru</IonSelectOption>
-                <IonSelectOption value="bolivia">Bolivia</IonSelectOption>
+                {regions.map(region => (
+                  <IonSelectOption value={region.region}>{region.region}</IonSelectOption>
+                ))}
               </IonSelect>
+            </IonItem>
+            <IonItem>
+              <IonSelect
+              label="Comuna (obligatorio)"
+              fill="solid"
+              labelPlacement="floating"
+              onIonChange={e => Update_Form("comuna", (e.target as HTMLIonSelectElement).value)}
+              className={clsx('item-spacing', {
+                  'ion-touched': isTouched,
+              })}
+              >
+                {regionsData.filter(r => r.region == formData.region).length !== 0 &&
+                regionsData.filter(r => r.region == formData.region)[0].comunas.map(comuna => (
+                  <IonSelectOption value={comuna}>{comuna}</IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
             </IonCol>
             <IonCol>
               <IonList>
                 <IonItem>
-                  2
+                  tag
                 </IonItem>
                 <IonItem>
-                  2
+                  tag
+                </IonItem>
+                <IonItem>
+                  tag
                 </IonItem>
               </IonList>
              </IonCol>

@@ -24,7 +24,7 @@ const Sign_In: React.FC = () => {
     INVALID,
   };
 
-  const [formData, setFromData] = useState({
+ const [formData, setFromData] = useState({
       userName: false,
       region: '',
       comuna: '',

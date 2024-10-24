@@ -7,57 +7,23 @@ import '../theme/Sign_In.css';
 import My_Toolbar from '../components/My_Toolbar'
 import Footer from '../components/Footer';
 
+import { useHistory } from "react-router-dom";
+
 const Sign_In: React.FC = () => {
+  const history = useHistory();
   const [isTouched, setIsTouched] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState<boolean>();
 
   const [tags] = useState([
     "python", "c", "c++", "ruby"
   ]);
 
-  const Is_Email = (email: string) => {
-    return email.match(
-      /^(?=.{1,254}$)(?=.{1,64}@)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-    );
-  }
-
-  const Validate_Email = (event: Event) => {
-    const email = (event.target as HTMLTextAreaElement).value;
-
-    setIsEmailValid(undefined);
-
-    if ( email === '' ) return;
-
-    Is_Email(email) !== null ? setIsEmailValid(true) : setIsEmailValid(false);
-  };
-
-  const Is_Rut = (rut: string) => {
-    return rut.match(
-      /^(\d{1,3}(?:\.\d{1,3}){2}-[\dkK])$/
-    );
-  }
-
-  const [isRutValid, setIsRutValid] = useState<boolean>();
-  const Validate_Rut = (event: Event) => {
-    const rut = (event.target as HTMLTextAreaElement).value;
-
-    setIsRutValid(true);
-
-    if ( rut === '' ) return;
-
-    Is_Rut(rut) !== null ? setIsRutValid(true) : setIsRutValid(false);
-  }
-
-  const Validate_Password = (event: Event) => {
-  }
-
   const markTouched = () => {
     setIsTouched(true);
   };
 
-  const Validate_Submit = () : Boolean =>  {
-      console.log("hola perras");
-      return true;
+  const Validate_Submit = () => {
+    console.log("submiting post.");
+    history.push("/home");
   }
 
   return (
@@ -69,8 +35,6 @@ const Sign_In: React.FC = () => {
             <IonItem>
                 <IonTextarea 
                 className={clsx('item-spacing', {
-                    'ion-valid'  : isEmailValid,
-                    'ion-invalid': isEmailValid === false,
                     'ion-touched': isTouched,
                 })}
                 fill="solid"
@@ -78,15 +42,12 @@ const Sign_In: React.FC = () => {
                 labelPlacement="floating"
                 helperText="Ingresa el titulo del post."
                 errorText="Titulo invalido."
-                onIonInput={(event) => Validate_Email(event)}
                 onIonBlur={() => markTouched()}
                 ></IonTextarea>
             </IonItem>
             <IonItem>
                 <IonTextarea 
                 className={clsx('item-spacing', {
-                    'ion-valid'  : isEmailValid,
-                    'ion-invalid': isEmailValid === false,
                     'ion-touched': isTouched,
                 })}
                 fill="solid"
@@ -94,7 +55,6 @@ const Sign_In: React.FC = () => {
                 labelPlacement="floating"
                 helperText="Ingresa la descripción post."
                 errorText="Descripción invalida."
-                onIonInput={(event) => Validate_Email(event)}
                 onIonBlur={() => markTouched()}
                 ></IonTextarea>
             </IonItem>
@@ -104,8 +64,6 @@ const Sign_In: React.FC = () => {
                 fill="solid"
                 labelPlacement="floating"
                 className={clsx('item-spacing', {
-                    'ion-valid'  : isEmailValid,
-                    'ion-invalid': isEmailValid === false,
                     'ion-touched': isTouched,
                 })}
                 >
@@ -117,7 +75,7 @@ const Sign_In: React.FC = () => {
             <div className="login-wrapper">
             <IonItem>
                 <IonToolbar className="botones-container">
-                <IonButton className="my-button" onClick={() => Validate_Submit()} routerLink='/Home'>Registrate</IonButton>
+                <IonButton className="my-button" onClick={() => Validate_Submit()}>Registrate</IonButton>
                 </IonToolbar>
             </IonItem>
             </div>
