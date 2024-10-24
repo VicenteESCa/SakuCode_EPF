@@ -1,0 +1,68 @@
+.custom{
+    --background: linear-gradient(180deg, #4b0082, #8a2be2);
+    width: 100%;
+    padding: 0px 0px 0px 0px;
+    border-radius: 0 0 25px 25px;
+}
+.Radius-Box-Sizing-toolbar{
+    border-radius: 0 0 25px 25px;
+}
+.Titulo-Correo{
+    --margin: 0px;
+    text-align: center
+}
+
+.semi-transparent-text::placeholder {
+    color: rgba(128, 128, 128, 0.5); /* Color gris semi-transparente */
+}
+.custom-popOver{
+    width: 500px;
+    height: 100px;
+}
+.login-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@font-face {
+    font-family: 'Title_Font';
+    src: url('../assets/fonts/Jersey10-Regular.ttf');
+    font-weight: bold;
+    
+}
+
+.toolbar-title {
+    text-align: center;
+    font-family: 'Title_Font';
+    font-size: 60px;
+    background: black;
+    background-clip: text;
+    -webkit-text-stroke: 4px transparent;
+    position: relative;
+}
+
+.profile_img {
+    width:  50px;
+    height:  50px;
+    border-radius: 50%;
+    border: 2px solid black;
+    border-color: #3e0f5f;
+}
+
+ion-button {
+  --box-shadow: 0px;
+
+  --background-hover: none;
+  --background-activated: none;
+  --background-activated-opacity: 0%;
+  --background-focused: none;
+
+  --border-width: 0px;
+}
+
+.menu_button{
+    visibility: hidden;
+    padding: 0px;
+}

@@ -1,0 +1,10 @@
+{
+  "name": "ep2",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "server":{
+    "port": 3000
+  }
+}

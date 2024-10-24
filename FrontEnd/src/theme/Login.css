@@ -1,0 +1,33 @@
+.my-button{
+    --background: #8a2be2;
+    width: 200px;
+    padding-left:  20px;
+    padding-right: 20px;
+}
+
+.botones-container {
+    display: flex;
+    justify-content: center;
+    gap: 200px; /* Espacio entre los botones */
+  }
+
+.Titulo-Correo{
+    --margin: 0px;
+    text-align: center
+}
+
+.semi-transparent-text::placeholder {
+    color: rgba(128, 128, 128, 0.5); /* Color gris semi-transparente */
+}
+
+.login-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.aver{
+    padding: 0px 0px 0px 0px;
+    border-radius: 0 0 25px 25px;
+    width:50%;
+}

@@ -1,0 +1,31 @@
+.comment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.comment ion-item::part(native) {
+    --background: linear-gradient(90deg, #5c0a96, #9b4ae8);
+  
+    --border-color: #b680dc;
+    --border-width: 2px;
+  
+    --border-radius: 10px;
+  
+    --ripple-color: purple;
+  
+    --detail-icon-color: white;
+    --detail-icon-opacity: 1;
+    --detail-icon-font-size: 20px;
+}
+
+.comment img {
+    position: relative;
+    left: -17px;
+    width: 50px;
+    border-radius: 0 10px 10px 0;
+
+    border: 2px solid #b680dc;
+}

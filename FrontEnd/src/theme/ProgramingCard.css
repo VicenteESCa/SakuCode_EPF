@@ -1,0 +1,26 @@
+.card-background {
+    position: relative;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+  }
+  
+.logo-image {
+    width: 60px;
+    height: auto;
+    position: absolute;
+    z-index: 1;
+  }
+.swiper-slide {
+    width: 200px; /* Ajusta según lo que necesites */
+    height: auto; /* Evita problemas de tamaño fijo */
+    margin-right: 10px; /* Para espaciar las tarjetas si es necesario */
+  }
+  
+.swiper-container {
+    width: 100%; /* Para que el Swiper use todo el ancho */
+    height: auto;
+  }
+

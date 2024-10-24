@@ -1,0 +1,50 @@
+.swiper-slide {
+  width: auto;  /* Deja que las tarjetas tengan su propio tamaño */
+  height: auto; /* Para espaciar las tarjetas si es necesario */
+}
+  
+.swiper-container{
+    width: 100%; /* Para que el Swiper use todo el ancho */
+    height: auto;
+}
+
+.cards{
+  height:150px;
+  width: 160px;
+  margin:auto;
+  margin-bottom: 5%;
+  /*background-image: url("../theme/images/probar.jpg");*/
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius:12px;
+  box-shadow: 2.5px 2.9px gray;
+}
+
+.cards[data-img] {
+   
+  background: var(--img-background);
+}
+
+
+.roboto-slab-Headers-Font {
+  font-family: "Roboto Slab", serif;
+  font-optical-sizing: auto;
+  font-size : 8vw;
+  font-style: normal;
+  margin:10px 12px 10px 10px;
+  padding-left: 50px;
+  position: relative;
+  font-weight: 500;
+}
+
+.montserrat-Parrafos-font{
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-size: 3vw;
+}
+
+body{
+  font-size: 100%;
+}

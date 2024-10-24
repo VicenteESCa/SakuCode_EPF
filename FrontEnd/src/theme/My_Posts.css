@@ -1,0 +1,30 @@
+.post {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.post-box {
+    --background: linear-gradient(90deg, #5c0a96, #9b4ae8);
+  
+    --border-color: #b680dc;
+    --border-width: 2px;
+  
+    --border-radius: 10px;
+  
+    --ripple-color: purple;
+  
+    --detail-icon-color: white;
+    --detail-icon-opacity: 1;
+    --detail-icon-font-size: 20px;
+}
+
+ion-icon {
+    margin: 0 0 0 0;
+}
+
+.hola {
+    --background: none;
+}

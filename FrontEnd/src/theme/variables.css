@@ -1,0 +1,8 @@
+/* For information on how to create your own theme, please see:
+http://ionicframework.com/docs/theming/ */
+  /* También puedes utilizar margin si prefieres mover el botón más allá del contenedor */
+  .menu-button {
+    margin: 5px 0px 0px 16px;
+  }
+  /* variables.css */
+@import '~swiper/swiper-bundle.css';
