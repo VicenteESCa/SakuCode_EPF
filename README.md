@@ -8,8 +8,6 @@ Consultas avanzadas: MongoDB ofrece potentes capacidades de consulta, incluyendo
 
 Soporte para datos en tiempo real: Con características como Change Streams, puedes construir aplicaciones que reaccionen en tiempo real a cambios en la base de datos, lo que es ideal para funciones como notificaciones y actualizaciones instantáneas.
 
-Desempeño en operaciones de lectura y escritura: MongoDB maneja eficientemente operaciones de lectura y escritura, lo cual es importante en un foro con alta interacción entre usuarios.
-
 Facilidad de integración: Es fácil integrar MongoDB con frameworks y bibliotecas populares en el desarrollo de aplicaciones, lo que acelera el proceso de desarrollo.
 
 Escalabilidad: MongoDB es altamente escalable. Puede manejar grandes volúmenes de datos y crecer fácilmente a medida que el foro aumenta su base de usuarios.
