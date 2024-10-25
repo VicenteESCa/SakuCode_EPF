@@ -6,7 +6,7 @@ import My_Toolbar from '../components/My_Toolbar';
 import Footer from '../components/Footer';
 import { toBeVisible } from '@testing-library/jest-dom/matchers';
 
-const post_search: React.FC=() =>{
+const Search: React.FC=() =>{
     const dataMomentanea=[
         "Ruby",
         "C",
@@ -14,12 +14,13 @@ const post_search: React.FC=() =>{
         "Machine learning",
         "IAs",
         "Data base",
-        "c#"
-        ,"c++"
-    ]
-    const [result,setResult] = useState([...dataMomentanea])
+        "c#",
+        "c++"
+    ];
 
-    const [visibl, setVisible]= useState(true)
+    const [result,setResult] = useState(dataMomentanea);
+    const [visible, setVisible]= useState(true);
+
     const handldeInput = (e:Event)=>{
         let query="";
         const target =e.target as HTMLIonSearchbarElement;
@@ -27,7 +28,8 @@ const post_search: React.FC=() =>{
 
         setResult(dataMomentanea.filter((d)=>d.toLowerCase().indexOf(query)> -1))
     }
-    return(
+
+    return (
         <IonPage>
             <My_Toolbar>Search</My_Toolbar>
             <IonContent fullscreen>
@@ -56,4 +58,4 @@ const post_search: React.FC=() =>{
     );
 };
 
-export default post_search;
+export default Search;

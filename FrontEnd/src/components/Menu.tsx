@@ -1,6 +1,5 @@
 import React from 'react';
 import {IonItem, IonHeader, IonMenu, IonToolbar, IonTitle, IonContent, IonPage, IonButton,IonButtons, IonMenuButton, IonList, IonLabel, IonMenuToggle } from '@ionic/react'
-import '../theme/Login.css';
 
 const Menu:React.FC=()=>{
     return(
@@ -16,33 +15,26 @@ const Menu:React.FC=()=>{
                             <IonItem routerLink='/home'> 
                                 <IonLabel>Home</IonLabel>
                             </IonItem>
-                        </IonMenuToggle>
-                        <IonMenuToggle>
                             <IonItem routerLink='/login'>
                                 <IonLabel>Inicio de sesion</IonLabel>
                             </IonItem>
-                        </IonMenuToggle>
-                        <IonMenuToggle>
                             <IonItem routerLink='/my_posts'>
                                 <IonLabel>Mis posts</IonLabel>
                             </IonItem>
-                        </IonMenuToggle>
-                        <IonMenuToggle>
                             <IonItem routerLink='/comment_post'>
                                 <IonLabel>Comentar post</IonLabel>
                             </IonItem>
-                        </IonMenuToggle>
-                        <IonMenuToggle>
                             <IonItem routerLink='/sign_in'>
                                 <IonLabel>Registrarse</IonLabel>
                             </IonItem>
                             <IonItem routerLink='/create_post'>
                                 <IonLabel>Crear Post</IonLabel>
                             </IonItem>
-                        </IonMenuToggle>
-                        <IonMenuToggle>
-                            <IonItem routerLink='/Busqueda_post'>
-                                <IonLabel>Search Post</IonLabel>
+                            <IonItem routerLink='/search'>
+                                <IonLabel>Buscar</IonLabel>
+                            </IonItem>
+                            <IonItem routerLink='/edit_post'>
+                                <IonLabel>Editar Post</IonLabel>
                             </IonItem>
                         </IonMenuToggle>
                     </IonList>

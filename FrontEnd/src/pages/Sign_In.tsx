@@ -2,11 +2,11 @@ import { IonCheckbox, IonSelect, IonSelectOption, IonInputPasswordToggle, IonLis
 import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import ExploreContainer from '../components/ExploreContainer';
-import '../theme/Login.css';
-import '../theme/Sign_In.css';
 import My_Toolbar from '../components/My_Toolbar'
 import Footer from '../components/Footer';
 import { useHistory } from "react-router-dom";
+
+import '../theme/Sign_In.css';
 
 import regionsData from '../assets/regiones_y_comunas.json';
 

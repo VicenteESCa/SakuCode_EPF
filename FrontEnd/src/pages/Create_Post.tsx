@@ -9,7 +9,7 @@ import Footer from '../components/Footer';
 
 import { useHistory } from "react-router-dom";
 
-const Sign_In: React.FC = () => {
+const Create_Post: React.FC = () => {
   const history = useHistory();
   const [isTouched, setIsTouched] = useState(false);
 
@@ -86,4 +86,4 @@ const Sign_In: React.FC = () => {
   );
 };
 
-export default Sign_In;
+export default Create_Post;

@@ -31,15 +31,16 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import Login from './pages/Login';
-import Sign_In from './pages/Sign_In';
-import Create_Post from './pages/Create_Post';
 import Menu from './components/Menu';
 import Home from './pages/Home';
+import Search from './pages/Search';
+import Login from './pages/Login';
+import Sign_In from './pages/Sign_In';
 import Edit_Profile from './pages/Edit_Profile';
 import My_Posts from './pages/My_Posts';
+import Create_Post from './pages/Create_Post';
 import Comment_Post from './pages/Comment_Post';
-import post_search from './pages/Busqueda_post';
+import Edit_Post from './pages/Hola';
 
 setupIonicReact();
 
@@ -58,7 +59,8 @@ const App: React.FC = () => (
             <Route path="/edit_profile" component={Edit_Profile}></Route>
             <Route path="/my_posts" component={My_Posts}></Route>
             <Route path="/comment_post" component={Comment_Post}></Route>
-            <Route path="/Busqueda_post" component={post_search}></Route>
+            <Route path="/search" component={Search}></Route>
+            <Route path="/edit_post" component={Edit_Post}></Route>
             <Redirect from="/" to="/home" exact />
           </IonRouterOutlet>
         </IonPage>

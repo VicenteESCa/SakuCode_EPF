@@ -5,19 +5,29 @@ import { chevronDown, chevronForward } from 'ionicons/icons';
 import My_Toolbar from '../components/My_Toolbar'
 import Footer from '../components/Footer';
 
+import {useLocation} from 'react-router-dom';
+
 import '../theme/Comment_Post.css';
 
+import commentsData from '../assets/comments.json';
+
 const Edit_Profile: React.FC = () => {
-  const [items, setItems] = useState([
-    { id: 1, title: 'I think you should try', imgSrc: 'src/assets/img_random.jpg', description: 'detalle comentario 1', expanded: false },
-    { id: 2, title: 'I think you should try', imgSrc: 'src/assets/img_random.jpg', description: 'detalle comentario 2', expanded: false },
-    { id: 3, title: 'I think you should try', imgSrc: 'src/assets/img_random.jpg', description: 'detalle comentario 3', expanded: false },
-  ]);
+  const [comments] = useState(commentsData);
+
+  const INVALID_ID = 0xffffffff;
+  const [expandedID, setExpandedID] = useState<number>(INVALID_ID);
+
+  const location = useLocation();
+  let postID: number;
+
+  if ( typeof location.state == "number" ) {
+    postID = location.state;
+  } else {
+    console.error("the state given to the comments page is not the original post id");
+  }
 
   const toggleExpand = (id: number) => {
-    setItems(items.map(item => 
-      item.id === id ? { ...item, expanded: !item.expanded } : item
-    ));
+    setExpandedID(id);
   };
 
   const editItem = (item: any) => {
@@ -33,10 +43,10 @@ const Edit_Profile: React.FC = () => {
       <My_Toolbar>Comment Post</My_Toolbar>
       <IonContent fullscreen>
         <IonLabel>
-            <IonTitle style={{"margin-top": "30px", "margin-left": "30px"}}>Comentarios: 69</IonTitle>
+            <IonTitle style={{"margin-top": "30px", "margin-left": "30px"}}>Comentarios: { comments.filter(c => c.postID == postID ).length }</IonTitle>
         </IonLabel>
 
-        {items.map(item => (
+        {comments.map(item => ( ( item.postID == postID ) &&
           <IonItemSliding key={item.id}>
             <div className='comment'>
               <IonItem button lines='none' style={{width: "70%"}} onClick={() => toggleExpand(item.id)}>
@@ -44,11 +54,11 @@ const Edit_Profile: React.FC = () => {
                 <IonLabel>
                   <h2 style={{textWrap: "nowrap"}}>{item.title}</h2>
                 </IonLabel>
-                <IonIcon slot="end" icon={item.expanded ? chevronDown : chevronForward} />
+                <IonIcon slot="end" icon={ ( item.id == expandedID ) ? chevronDown : chevronForward } />
               </IonItem>
             </div>
 
-            {item.expanded && <p style={{textAlign: "center"}}>{item.description}</p>}
+            { ( item.id == expandedID ) && <p style={{textAlign: "center"}}>{item.description}</p>}
 
             <IonItemOptions side="end">
               <IonItemOption onClick={() => editItem(item)}>

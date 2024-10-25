@@ -1,0 +1,10 @@
+[
+    { "id": 1, "postID": 1, "imgSrc": "src/assets/img_random.jpg", "title": "My Comment 1", "description": "Description 1" },
+    { "id": 2, "postID": 1, "imgSrc": "src/assets/img_random.jpg", "title": "My Comment 2", "description": "Description 2" },
+    { "id": 3, "postID": 2, "imgSrc": "src/assets/img_random.jpg", "title": "My Comment 3", "description": "Description 3" },
+    { "id": 4, "postID": 1, "imgSrc": "src/assets/img_random.jpg", "title": "My Comment 4", "description": "Description 4" },
+    { "id": 5, "postID": 1, "imgSrc": "src/assets/img_random.jpg", "title": "My Comment 5", "description": "Description 5" },
+    { "id": 6, "postID": 3, "imgSrc": "src/assets/img_random.jpg", "title": "My Comment 6", "description": "Description 6" },
+    { "id": 7, "postID": 4, "imgSrc": "src/assets/img_random.jpg", "title": "My Comment 7", "description": "Description 7" },
+    { "id": 8, "postID": 2, "imgSrc": "src/assets/img_random.jpg", "title": "My Comment 8", "description": "Description 8" }
+]

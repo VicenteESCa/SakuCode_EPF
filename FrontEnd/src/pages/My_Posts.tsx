@@ -1,31 +1,52 @@
 import { IonItemSliding, IonItemOptions, IonItemOption, IonText, IonLabel, IonIcon, IonCol, IonRow, IonGrid, IonCheckbox, IonSelect, IonSelectOption, IonInputPasswordToggle, IonList, IonInput, IonButton, IonContent, IonHeader, IonItem, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { clsx } from 'clsx';
-import { chatboxEllipses, trash, chevronDown, chevronForward } from 'ionicons/icons';
+import { createOutline, chatboxEllipses, trash, chevronDown, chevronForward } from 'ionicons/icons';
 import My_Toolbar from '../components/My_Toolbar'
 import Footer from '../components/Footer';
+import { useHistory } from "react-router-dom";
 
 import '../theme/My_Posts.css';
 
+import postsData from '../assets/posts.json';
+
 const My_Posts: React.FC = () => {
-  const [items, setItems] = useState([
-    { id: 1, title: 'i have a question', description: 'detalle post 1', expanded: false },
-    { id: 2, title: 'i have a question', description: 'detalle post 2', expanded: false },
-    { id: 3, title: 'i have a question', description: 'detalle post 3', expanded: false },
-  ]);
+  const history = useHistory();
+  const INVALID_ID = 0xffffffff;
+
+  const [posts] = useState(postsData);
+  const [expandedID, setExpandedID] = useState<number>(INVALID_ID);
 
   const toggleExpand = (id: number) => {
-    setItems(items.map(item => 
-      item.id === id ? { ...item, expanded: !item.expanded } : item
-    ));
+    setExpandedID(id);
   };
 
   const editItem = (item: any) => {
     console.log('Edit:', item);
   };
 
-  const deleteItem = (item: any) => {
-    console.log('Delete:', item);
+  const Post_By_ID = (id: number) : number => {
+    return posts.indexOf(posts.filter(p => p.id == id)[0], 0);
+  } 
+
+  const deleteItem = (id: number) => {
+    const index = Post_By_ID(id);
+    posts.splice(index, 1);
+  };
+
+  const Route_Comment = (id: number) => {
+    history.push({
+      pathname: '/comment_post',
+      state: id
+    })
+  };
+
+  const Route_Edit = (id: number) => {
+    history.push({
+      pathname: '/edit_post',
+      state: id
+    })
   };
 
   return (
@@ -33,36 +54,30 @@ const My_Posts: React.FC = () => {
       <My_Toolbar>Mis Post</My_Toolbar>
       <IonContent fullscreen>
         <IonLabel>
-            <IonTitle style={{"margin-top": "30px", "margin-left": "30px"}}>Posts: 69</IonTitle>
+            <IonTitle style={{"margin-top": "30px", "margin-left": "30px"}}>Posts: {posts.length}</IonTitle>
         </IonLabel>
 
-        {items.map(item => (
+        {posts.map(item => (
           <IonItemSliding key={item.id}>
             <div className='post'>
               <IonItem className='post-box' button lines='none' style={{width: "70%"}} onClick={() => toggleExpand(item.id)}>
                 <IonLabel>
                   <h2 style={{textWrap: "nowrap"}}>{item.title}</h2>
                 </IonLabel>
-                <IonItem className='hola' button lines='none'>
+                <IonItem className='hola' onClick={e => deleteItem(item.id)} button lines='none'>
                   <IonIcon slot="end" icon={trash}/>
                 </IonItem>
-                <IonItem className='hola' button lines='none' routerLink='/comment_post'>
+                <IonItem className='hola' button onClick={e => Route_Comment(item.id)} lines='none'>
                   <IonIcon slot="end" icon={chatboxEllipses}/>
                 </IonItem>
-                <IonIcon slot="end" icon={item.expanded ? chevronDown : chevronForward} />
+                <IonItem className='hola' button onClick={e => Route_Edit(item.id)} lines='none'>
+                  <IonIcon slot="end" icon={createOutline}/>
+                </IonItem>
+                <IonIcon slot="end" icon={ ( item.id == expandedID ) ? chevronDown : chevronForward } />
               </IonItem>
             </div>
 
-            {item.expanded && <p style={{textAlign: "center"}}>{item.description}</p>}
-
-            <IonItemOptions side="end">
-              <IonItemOption onClick={() => editItem(item)}>
-                Edit
-              </IonItemOption>
-              <IonItemOption onClick={() => deleteItem(item)}>
-                Delete
-              </IonItemOption>
-            </IonItemOptions>
+            { ( item.id == expandedID ) && <p style={{textAlign: "center"}}>{item.description}</p> }
           </IonItemSliding>
         ))}
 
