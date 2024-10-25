@@ -40,7 +40,7 @@ import Edit_Profile from './pages/Edit_Profile';
 import My_Posts from './pages/My_Posts';
 import Create_Post from './pages/Create_Post';
 import Comment_Post from './pages/Comment_Post';
-import Edit_Post from './pages/Hola';
+import Edit_Post from './pages/Edit_Post-';
 
 setupIonicReact();
 
