@@ -1,23 +1,12 @@
-import express from "express"
-import mongoose from "mongoose"
 
-const app=express()
+import app from "./app.js";
+import { ConnectDB } from "./db.js";
 
-mongoose.connect("mongodb+srv://user1:prueba123@cluster0.pui3u.mongodb.net/crud")
-const userschema = new mongoose.schema({
-    name:string,
-    age:number,
-})
-
-const usermodel = mongoose.model("emp", userschema)
-
-const emp1 = new usermodel({
-    name:"vicente",
-    age:21,
-})
-
-emp1.save();
-app.listen("3001", ()=>{
-    console.log("server is running!!")
-})
-
+try {
+  await ConnectDB();
+  app.listen(4000, () => {
+    console.log("Server is running on port 4000");
+  });
+} catch (error) {
+  console.error("Error al iniciar la aplicación:", error);
+}
