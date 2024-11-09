@@ -8,10 +8,6 @@ const app=express();
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
-
-app.post("/test", (req,res)=>{
-    res.send("ruta de prueba")
-})
 /**
  * 
  * el api/auth puede ser reemplazada por cualquiera
