@@ -1,0 +1,3 @@
+Hacer correr el backend solo por consola:
+
+npm run dev
