@@ -1,3 +1,9 @@
 Hacer correr el backend solo por consola:
 
 npm run dev
+
+Las dependencias pueden ser instaladas automaticamente si se ejecuta:
+
+npm install
+
+Solo esto bastara para hacer correr el ejercicio

@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const userSchema = new mongoose.Schema({
-    name:{
+    username:{
         type: String,
         required: true,
         trim: true,
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
 /**
  * Pluraliza el nombre para crear una coleccion de usuarios 
  */
-export default  mongoose.model( 'User', userSchema  )
+export default mongoose.model("user",userSchema)
 
 
 
