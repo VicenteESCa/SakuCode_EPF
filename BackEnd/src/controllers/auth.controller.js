@@ -1,6 +1,8 @@
 import User from "../models/user.model.js"
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import {createAccesToken} from '../libs/userJWT.js'
+
+
 export const register = async (req, res) => {
     /**Lectura del body en la peticion */
     console.log("body recibido", req.body)
@@ -9,23 +11,25 @@ export const register = async (req, res) => {
     try{
 
         const hashs = await bcrypt.hash(password,10) 
-
         const newUser = new User({
             username,
             email,
             password:hashs,
         })
-        const usuarioSaved = await newUser.save()
         
+        const usuarioSaved = await newUser.save()
+        const token = await createAccesToken({id: usuarioSaved._id})
 
+        res.cookie('token', token)
         // Solo devuelve un valor definido con el post
         res.json({
             id: usuarioSaved._id,
             username: usuarioSaved.username,
-            email: usuarioSaved.,
+            email: usuarioSaved.email,
             createdAt: usuarioSaved.createdAt,
             updatedAt: usuarioSaved.updatedAt,
         })
+
     }catch(error){
         console.error("Error al registrar usuario:", error);
         res.status(500).send("Error al registrar usuario");
