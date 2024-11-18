@@ -1,1 +1,1 @@
-export const TOKENs = "Chi la media vola"
+export const TOKEN = "Chi la media vola"

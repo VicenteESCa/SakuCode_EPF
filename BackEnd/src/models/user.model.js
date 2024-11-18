@@ -25,7 +25,3 @@ const userSchema = new mongoose.Schema({
  * Pluraliza el nombre para crear una coleccion de usuarios 
  */
 export default mongoose.model("user",userSchema)
-
-
-
-
