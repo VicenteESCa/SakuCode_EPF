@@ -30,26 +30,48 @@ export const register = async (req, res) => {
             updatedAt: usuarioSaved.updatedAt,
         })
 
-    }catch(error){
-        console.error("Error al registrar usuario:", error);
+    }catch(error){ 
         res.status(500).send("Error al registrar usuario");
     }
 }
 
-export const login = async (req,res) => {
-    console.log("Body recibido", req.body)
-    const {usernmae, email, password} = req.body
+export const login = async (req, res) => {
+    /**Lectura del body en la peticion */
+    console.log("body recibido", req.body)
+    const {email,password} = req.body
+    /**Try catch para la asincronia */
     try{
-        const user = User({
+        const UserFind = await User.findOne({email})
+
+        if(!UserFind) return res.status(400).json({
+            message: "Chuata no hay"
+        })
+        const isMatch = await bcrypt.compare(password, UserFind.password) 
+        if(!isMatch) return res.status(400).json({
+            message: "mala tu wea de contraseña"
+        
+        })
+
+        const newUser = new User({
             username,
             email,
-            password
+            password:hashs,
         })
-        await user.res()
-        res.send("Inicio de sesion")
         
-    }catch(error){
-        console.error("Error de acceder al ususario", error)
-        res.status(500).send("Error de inicio de sesion")
+        const usuarioSaved = await newUser.save();
+        const token = await createAccesToken({id: UserFind._id}); 
+
+        res.cookie('token', token)
+        // Solo devuelve un valor definido con el post
+        res.json({
+            id: usuarioSaved._id,
+            username: usuarioSaved.username,
+            email: usuarioSaved.email,
+            createdAt: usuarioSaved.createdAt,
+            updatedAt: usuarioSaved.updatedAt,
+        })
+
+    }catch(error){ 
+        res.status(500).send("Error al registrar usuario");
     }
-}   
+}
