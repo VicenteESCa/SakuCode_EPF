@@ -4,11 +4,16 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from './routes/auth.routes.js';
 import postRoutes from './routes/post.routes.js';
+import commentRoutes from './routes/comment.routes.js';
+import tagRoutes from './routes/tag.routes.js';
 
 import cors from "cors";
 
 const app=express();
 
+app.use(cors({
+    origin:'http://localhost:8100'
+}))
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
@@ -21,6 +26,8 @@ app.use(cookieParser());
  */
 
 app.use("/api/auth", authRoutes);
-app.use("/api", postRoutes);
+app.use("/api/post", postRoutes);
+app.use("/api/comment", commentRoutes);
+app.use("/api/tag", tagRoutes);
 
-export default app; 
+export default app;

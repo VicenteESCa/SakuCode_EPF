@@ -20,7 +20,8 @@ export const createPost = async (req, res) => {
         //date: date,
     });
 
-    res.status(200).json(await post.save());
+    const postSaved = await post.save();
+    res.json(postSaved);
 }
 
 export const deletePost = async (req, res) => {

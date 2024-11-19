@@ -6,6 +6,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    rut:{
+        type: String,
+        required: true,
+       // unique: true,
+    },
     email: {
         type: String,
         required: true,
@@ -13,15 +18,29 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     password: {
-        type:String,
+        type: String,
         required: true,
-    }
+    },
+    region:{
+        type: String,
+        required: true,
+    },
+    comuna:{
+        type: String,
+        required: true,
+    },
+    /**
+    termsAndConds: {
+        type: Boolean,
+        required: true
+    } */
 }, {
     timestamps: true,
     collection: "users",
     autoCreate: true
-})  
+});
+
 /**
  * Pluraliza el nombre para crear una coleccion de usuarios 
  */
-export default mongoose.model("user",userSchema)
+export default mongoose.model("user", userSchema)

@@ -1,3 +1,4 @@
+// Imports utilizados en el front end
 import { IonCheckbox, IonSelect, IonSelectOption, IonInputPasswordToggle, IonList, IonInput, IonButton, IonContent, IonHeader, IonItem, IonPage, IonTextarea, IonTitle, IonToolbar, IonText } from '@ionic/react';
 import React, { useState } from 'react';
 import { clsx } from 'clsx';
@@ -5,8 +6,11 @@ import ExploreContainer from '../components/ExploreContainer';
 import My_Toolbar from '../components/My_Toolbar'
 import Footer from '../components/Footer';
 import { useHistory } from "react-router-dom";
-
+//Import del API
+import { User, registerRequest } from '../api/auth'
+//Css utilizado
 import '../theme/Sign_In.css';
+
 
 import regionsData from '../assets/regiones_y_comunas.json';
 
@@ -24,15 +28,15 @@ const Sign_In: React.FC = () => {
     INVALID,
   };
 
- const [formData, setFromData] = useState({
-      userName: false,
-      region: '',
-      comuna: '',
-      rut: {valid: Valid.UNDEFINED, value: ''},
-      email: {valid: Valid.UNDEFINED, value: ''},
-      password: {valid: Valid.UNDEFINED, value: ''},
-      confirmPassword: {valid: Valid.UNDEFINED, value: ''},
-      termsAndConds: false,
+  const [formData, setFromData] = useState({
+    userName: '', // Cambiar a string en lugar de boolean
+    region: '',
+    comuna: '',
+    rut: { valid: Valid.UNDEFINED, value: '' },
+    email: { valid: Valid.UNDEFINED, value: '' },
+    password: { valid: Valid.UNDEFINED, value: '' },
+    confirmPassword: { valid: Valid.UNDEFINED, value: '' },
+    termsAndConds: false,
   });
 
   const MIN_PASSWORD = 6;
@@ -119,21 +123,39 @@ const Sign_In: React.FC = () => {
     setIsTouched(true);
   };
 
-  const Validate_Submit = () =>  {
-        console.log(formData);
-      if ( !formData.userName || !formData.region || !formData.comuna || !formData.rut.value ||
-           !formData.termsAndConds || !formData.email.value || !formData.password.value || !formData.confirmPassword.value  ) {
-        setSubmitValid(false);
-        setError("Rellena los campos faltantes.");
-        error
-      } else if (formData.rut.valid != Valid.VALID || formData.email.valid != Valid.VALID ||
-                 formData.password.valid != Valid.VALID || formData.confirmPassword.valid != Valid.VALID) {
-        setSubmitValid(false);
-        setError("algunos campos no son validos.");
-      } else {
-        setSubmitValid(true);
-        history.push("/home");
+  const Validate_Submit = async () =>  {
+    console.log(formData);
+    
+    if ( !formData.userName || !formData.region || !formData.comuna || !formData.rut.value ||
+          !formData.termsAndConds || !formData.email.value || !formData.password.value || !formData.confirmPassword.value  ) {
+      setSubmitValid(false);
+      setError("Rellena los campos faltantes.");
+      error
+    } else if (formData.rut.valid != Valid.VALID || formData.email.valid != Valid.VALID ||
+                formData.password.valid != Valid.VALID || formData.confirmPassword.valid != Valid.VALID) {
+      setSubmitValid(false);
+      setError("algunos campos no son validos.");
+    } else {
+      setSubmitValid(true);
+      try {
+        const user: User = {
+          username: formData.userName,
+          region: formData.region,
+          comuna: formData.comuna,
+          rut: formData.rut.value,
+          email: formData.email.value,
+          password: formData.password.value,
+        }
+
+        const response = await registerRequest(user);
+        console.log("Registro exitoso", response);
+        history.push("/home")
+      } catch(error) {
+        console.log("Error de registro", error)
+        setError("Hubo un error al registrar el usuario. Intente nuevamente")
+        setSubmitValid(false)
       }
+    }
   }
 
   return (

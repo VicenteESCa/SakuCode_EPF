@@ -23,7 +23,7 @@ const postSchema = new mongoose.Schema({
     timestamps: true,
     collection: "posts",
     autoCreate: true,
-})  
+});
 
 /**
  * Pluraliza el nombre para crear una coleccion de usuarios 
