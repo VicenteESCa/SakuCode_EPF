@@ -45,33 +45,35 @@ export const login = async (req, res) => {
 
         if(!UserFind) return res.status(400).json({
             message: "Chuata no hay"
-        })
-        const isMatch = await bcrypt.compare(password, UserFind.password) 
+        }) 
+
+        const isMatch = await bcrypt.compare(password, UserFind.password)
+
         if(!isMatch) return res.status(400).json({
             message: "mala tu wea de contraseña"
         
         })
 
-        const newUser = new User({
-            username,
-            email,
-            password:hashs,
-        })
-        
-        const usuarioSaved = await newUser.save();
         const token = await createAccesToken({id: UserFind._id}); 
 
         res.cookie('token', token)
         // Solo devuelve un valor definido con el post
         res.json({
-            id: usuarioSaved._id,
-            username: usuarioSaved.username,
-            email: usuarioSaved.email,
-            createdAt: usuarioSaved.createdAt,
-            updatedAt: usuarioSaved.updatedAt,
+            id: UserFind._id,
+            username: UserFind.username,
+            email: UserFind.email,
+            createdAt: UserFind.createdAt,
+            updatedAt: UserFind.updatedAt,
+            message: "Mire sabe quee mire, igual le salio bien ya"
         })
 
     }catch(error){ 
-        res.status(500).send("Error al registrar usuario");
+        res.status(500).send("Error al logear usuario");
     }
+}
+export const logOut = (req,res) =>{
+    res.cookie('token', "", {
+        expires: new Date(0)
+    })
+    return res.sendStatus(200)
 }
