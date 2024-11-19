@@ -1,59 +1,57 @@
 import User from "../models/user.model.js"
 import bcrypt from 'bcryptjs'
-import {createAccesToken} from '../libs/userJWT.js'
-
+import {tokenForUser} from '../libs/userJWT.js'
 
 export const register = async (req, res) => {
     /**Lectura del body en la peticion */
-    console.log("body recibido", req.body)
-    const {username,email,password} = req.body
-    /**Try catch para la asincronia */
-    try{
+    console.log("body recibido", req.body);
+    const { username, email, password } = req.body;
 
-        const hashs = await bcrypt.hash(password,10) 
+    /**Try catch para la asincronia */
+    try {
+        const hashs = await bcrypt.hash(password,10);
         const newUser = new User({
             username,
             email,
             password:hashs,
-        })
+        });
         
-        const usuarioSaved = await newUser.save()
-        const token = await createAccesToken({id: usuarioSaved._id})
+        const savedUser = await newUser.save();
 
-        res.cookie('token', token)
-        // Solo devuelve un valor definido con el post
-        res.json({
-            id: usuarioSaved._id,
-            username: usuarioSaved.username,
-            email: usuarioSaved.email,
-            createdAt: usuarioSaved.createdAt,
-            updatedAt: usuarioSaved.updatedAt,
-        })
-
-    }catch(error){ 
-        res.status(500).send("Error al registrar usuario");
+        res = tokenForUser(savedUser, res);
+    } catch(error) {
+        res.status(500).json({ message: "Error al registrar usuario: " + error.message });
     }
 }
 
 export const login = async (req, res) => {
     /**Lectura del body en la peticion */
-    console.log("body recibido", req.body)
-    const {email,password} = req.body
-    /**Try catch para la asincronia */
-    try{
-        const UserFind = await User.findOne({email})
+    console.log("body recibido", req.body);
+    const { email, password } = req.body;
 
+    /**Try catch para la asincronia */
+    try {
+        const user = await User.findOne({ email });
+
+<<<<<<< HEAD
         if(!UserFind) return res.status(400).json({
             message: "Chuata no hay"
         }) 
 
         const isMatch = await bcrypt.compare(password, UserFind.password)
 
-        if(!isMatch) return res.status(400).json({
-            message: "mala tu wea de contraseña"
-        
-        })
+=======
+        if( !user ) return res.status(400).json({
+            message: "User not found."
+        });
 
+        const isMatch = await bcrypt.compare(password, user.password)
+>>>>>>> 04e32e990a6dc67a03fdc6150ff839601f15443a
+        if(!isMatch) return res.status(400).json({
+            message: "Incorrect password."
+        });
+
+<<<<<<< HEAD
         const token = await createAccesToken({id: UserFind._id}); 
 
         res.cookie('token', token)
@@ -76,4 +74,31 @@ export const logOut = (req,res) =>{
         expires: new Date(0)
     })
     return res.sendStatus(200)
+=======
+        res = tokenForUser(user, res);
+    } catch(error) {
+        res.status(500).json({ message: "Error at login: " + error.message });
+    }
+}
+
+export const logout = async (req, res) => {
+    res.cookie('token', "", {
+        expires: new Date(0)
+    });
+    res.sendStatus(200);
+}
+
+export const profile = async (req, res) => {
+    console.log(req.user);
+    const user = await User.findById(req.user.id);
+    if ( !user ) return res.status(400).json({ message: "User not found." });
+
+    return res.json({
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt,
+        udpatedAt: user.udpatedAt
+    });
+>>>>>>> 04e32e990a6dc67a03fdc6150ff839601f15443a
 }
