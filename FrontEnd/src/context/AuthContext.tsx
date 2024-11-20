@@ -5,6 +5,7 @@ interface AuthContextType {
     signup: (user: User) => Promise<void>;
     user: User | null;
     isAuthenticated: boolean;
+    errors: any;
 }
 
 export const AuthContext = createContext<AuthContextType|null>(null);
@@ -24,6 +25,7 @@ type AuthProviderProps = {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [ user, setUser ] = useState<User | null>(null);
     const [ isAuthenticated, setIsAuthenticated ] = useState(false);
+    const [ errors, setErrors ] = useState([]);
 
     const signup = async (user: User) => {
         try {
@@ -31,7 +33,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             console.log(res.data);
             setUser(res.data);
             setIsAuthenticated(true);
-        } catch (error) {
+        } catch (error: any) {
+            setErrors(error.response.data);
             console.log("Failed to signup: ", error);
         }
     }
@@ -42,6 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 signup,
                 user,
                 isAuthenticated,
+                errors,
             }}
         >
             { children }

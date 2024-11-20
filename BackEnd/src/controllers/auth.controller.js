@@ -5,7 +5,9 @@ import {tokenForUser} from '../libs/userJWT.js'
 export const register = async (req, res) => {
     /**Lectura del body en la peticion */
     console.log("body recibido", req.body);
-    const { username,rut, email, region, comuna, password, termsAndConds} = req.body;
+    const { username, rut, email, region, comuna, password, termsAndConds } = req.body;
+
+    if ( await User.findOne({ rut }) ) { return res.status(400).json(['Rut already in use.']) }
 
     /**Try catch para la asincronia */
     try {

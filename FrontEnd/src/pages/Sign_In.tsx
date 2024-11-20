@@ -3,7 +3,7 @@ import { IonCheckbox, IonSelect, IonSelectOption, IonInputPasswordToggle, IonLis
 import React, { useEffect, useState } from 'react';
 import { clsx } from 'clsx';
 import ExploreContainer from '../components/ExploreContainer';
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 //Import del API
 import { User, registerRequest } from '../api/auth'
 //Css utilizado
@@ -17,7 +17,7 @@ import { useAuth } from "../context/AuthContext"
 import regionsData from '../assets/regiones_y_comunas.json';
 
 const Sign_In: React.FC = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const [regions] = useState(regionsData);
   const [error, setError] = useState<string>("");
@@ -27,7 +27,7 @@ const Sign_In: React.FC = () => {
 
   useEffect(() => {
     if ( isAuthenticated ) {
-      navigate("/home");
+      history.push("/home");
     }
   }, [isAuthenticated])
 
@@ -134,8 +134,6 @@ const Sign_In: React.FC = () => {
   };
 
   const Validate_Submit = async () =>  {
-    console.log(formData);
-    
     if ( !formData.userName || !formData.region || !formData.comuna || !formData.rut.value ||
           !formData.termsAndConds || !formData.email.value || !formData.password.value || !formData.confirmPassword.value  ) {
       setSubmitValid(false);
@@ -147,17 +145,24 @@ const Sign_In: React.FC = () => {
       setError("algunos campos no son validos.");
     } else {
       setSubmitValid(true);
+
       try {
-        const user: User = {
+        // const user: User = {
+        //   username: formData.userName,
+        //   region: formData.region,
+        //   comuna: formData.comuna,
+        //   rut: formData.rut.value,
+        //   email: formData.email.value,
+        //   password: formData.password.value,
+        // }
+        const response = await signup({
           username: formData.userName,
           region: formData.region,
           comuna: formData.comuna,
           rut: formData.rut.value,
           email: formData.email.value,
           password: formData.password.value,
-        }
-
-        const response = await signup(user);
+        });
 
         console.log("Registro exitoso: ", response);
       } catch(error) {
@@ -266,7 +271,7 @@ const Sign_In: React.FC = () => {
              onIonInput={(event) => Validate_Password(event)}
              onIonBlur={() => markTouched()}
             >
-              <IonInputPasswordToggle defaultValue={"true"} slot="end"></IonInputPasswordToggle>
+              <IonInputPasswordToggle aria-checked="true" slot="end"></IonInputPasswordToggle>
             </IonInput>
           </IonItem>
           <IonItem>
@@ -284,7 +289,7 @@ const Sign_In: React.FC = () => {
               onIonInput={(event) => Validate_Confirm_Password(event)}
               onIonBlur={() => markTouched()}
             >
-              <IonInputPasswordToggle defaultValue={"true"} slot="end"></IonInputPasswordToggle>
+              <IonInputPasswordToggle aria-checked="true" slot="end"></IonInputPasswordToggle>
             </IonInput>
           </IonItem>
           <IonItem>
