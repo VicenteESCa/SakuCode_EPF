@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Navigate, Route } from 'react-router-dom'; // me lo pitie porque pase el paquete a la version 6.
 import {IonTitle, IonMenuButton, IonButtons, IonToolbar,  IonHeader, IonPage, IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
@@ -42,29 +42,37 @@ import Create_Post from './pages/Create_Post';
 import Comment_Post from './pages/Comment_Post';
 import Edit_Post from './pages/Edit_Post-';
 
+import { AuthProvider } from "./context/AuthContext"
+
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      {/* SplitPane para manejar el menú lateral */}
-        <Menu/> {/* Aquí se coloca el menú lateral */}
-        <IonPage id="main-content"> {/* Contenido principal de la página */}
-          <IonRouterOutlet id='main-content'>
-            {/* Definición de rutas */}
-            <Route path="/login" component={Login}></Route>
-            <Route path="/home" component={Home}></Route>
-            <Route path="/sign_in" component={Sign_In}></Route>
-            <Route path="/create_post" component={Create_Post}></Route>
-            <Route path="/edit_profile" component={Edit_Profile}></Route>
-            <Route path="/my_posts" component={My_Posts}></Route>
-            <Route path="/comment_post" component={Comment_Post}></Route>
-            <Route path="/search" component={Search}></Route>
-            <Route path="/edit_post" component={Edit_Post}></Route>
-            <Redirect from="/" to="/home" exact />
-          </IonRouterOutlet>
-        </IonPage>
-    </IonReactRouter>
+    <AuthProvider>
+      <IonReactRouter>
+        {/* SplitPane para manejar el menú lateral */}
+          <Menu/> {/* Aquí se coloca el menú lateral */}
+          <IonPage id="main-content"> {/* Contenido principal de la página */}
+            <IonRouterOutlet id='main-content'>
+              {/* Definición de rutas */}
+              <Route path="/login" element={<Login/>}></Route>
+              <Route path="/home" element={<Home/>}></Route>
+              <Route path="/sign_in" element={<Sign_In/>}></Route>
+              <Route path="/create_post" element={<Create_Post/>}></Route>
+              <Route path="/edit_profile" element={<Edit_Profile/>}></Route>
+              <Route path="/my_posts" element={<My_Posts/>}></Route>
+              <Route path="/comment_post" element={<Comment_Post/>}></Route>
+              <Route path="/search" element={<Search/>}></Route>
+              <Route path="/edit_post" element={<Edit_Post/>}></Route>
+              {/* <Redirect from="/" to="/home" exact /> */}
+              <Route
+                  path="*"
+                  element={<Navigate to="/home" replace/>}
+              />
+            </IonRouterOutlet>
+          </IonPage>
+      </IonReactRouter>
+    </AuthProvider>
   </IonApp>
 );
 

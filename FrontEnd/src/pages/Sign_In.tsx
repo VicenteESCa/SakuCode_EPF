@@ -1,25 +1,35 @@
 // Imports utilizados en el front end
 import { IonCheckbox, IonSelect, IonSelectOption, IonInputPasswordToggle, IonList, IonInput, IonButton, IonContent, IonHeader, IonItem, IonPage, IonTextarea, IonTitle, IonToolbar, IonText } from '@ionic/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { clsx } from 'clsx';
 import ExploreContainer from '../components/ExploreContainer';
-import My_Toolbar from '../components/My_Toolbar'
-import Footer from '../components/Footer';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //Import del API
 import { User, registerRequest } from '../api/auth'
 //Css utilizado
 import '../theme/Sign_In.css';
 
+import My_Toolbar from '../components/My_Toolbar'
+import Footer from '../components/Footer';
+
+import { useAuth } from "../context/AuthContext"
 
 import regionsData from '../assets/regiones_y_comunas.json';
 
 const Sign_In: React.FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [regions] = useState(regionsData);
   const [error, setError] = useState<string>("");
   const [submitIsValid, setSubmitValid] = useState<boolean>();
+
+  const { signup, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if ( isAuthenticated ) {
+      navigate("/home");
+    }
+  }, [isAuthenticated])
 
   const [isTouched, setIsTouched] = useState(false);
   enum Valid {
@@ -147,9 +157,9 @@ const Sign_In: React.FC = () => {
           password: formData.password.value,
         }
 
-        const response = await registerRequest(user);
-        console.log("Registro exitoso", response);
-        history.push("/home")
+        const response = await signup(user);
+
+        console.log("Registro exitoso: ", response);
       } catch(error) {
         console.log("Error de registro", error)
         setError("Hubo un error al registrar el usuario. Intente nuevamente")
@@ -256,7 +266,7 @@ const Sign_In: React.FC = () => {
              onIonInput={(event) => Validate_Password(event)}
              onIonBlur={() => markTouched()}
             >
-              <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+              <IonInputPasswordToggle defaultValue={"true"} slot="end"></IonInputPasswordToggle>
             </IonInput>
           </IonItem>
           <IonItem>
@@ -274,7 +284,7 @@ const Sign_In: React.FC = () => {
               onIonInput={(event) => Validate_Confirm_Password(event)}
               onIonBlur={() => markTouched()}
             >
-              <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+              <IonInputPasswordToggle defaultValue={"true"} slot="end"></IonInputPasswordToggle>
             </IonInput>
           </IonItem>
           <IonItem>

@@ -16,16 +16,17 @@ export interface User {
 axios.defaults.baseURL = 'http://localhost:4000/api';
 
 // Tipo de respuesta esperado de la solicitud de registro
-interface RegisterResponse {
-  message: string;
-  // Aquí puedes agregar más propiedades dependiendo de la respuesta que espere tu backend.
-}
+// interface RegisterResponse {
+//   message: string;
+  
+//   // Aquí puedes agregar más propiedades dependiendo de la respuesta que espere tu backend.
+// }
 
 // Función de registro con tipado
-export const registerRequest = (user: User): Promise<AxiosResponse<RegisterResponse>> => {
-  return axios.post<RegisterResponse>('/auth/register', user);
+export const registerRequest = (user: User): Promise<AxiosResponse<any>> => {
+  return axios.post<any>('/auth/register', user);
 }
 
-export const testRequest = (): Promise<AxiosResponse<RegisterResponse>> => {
-  return axios.post<RegisterResponse>('/auth/test');
+export const testRequest = (): Promise<AxiosResponse<any>> => {
+  return axios.post<any>('/auth/test');
 }

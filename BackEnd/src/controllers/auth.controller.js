@@ -23,7 +23,6 @@ export const register = async (req, res) => {
         const savedUser = await newUser.save();
 
         res = tokenForUser(savedUser, res);
-        
     } catch(error) {
         res.status(500).json({ message: "Error al registrar usuario: " + error.message });
     }
