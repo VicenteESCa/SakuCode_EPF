@@ -9,14 +9,14 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"
 
 //Css utilizado
-import '../theme/Sign_In.css';
+import '../theme/Sign_Up.css';
 
 import My_Toolbar from '../components/My_Toolbar'
 import Footer from '../components/Footer';
 
 import regionsData from '../assets/regiones_y_comunas.json';
 
-const Sign_In: React.FC = () => {
+const Sign_Up: React.FC = () => {
   const history = useHistory();
 
   const [regions] = useState(regionsData);
@@ -159,7 +159,7 @@ const Sign_In: React.FC = () => {
 
   return (
     <IonPage>
-      <My_Toolbar>Sign In</My_Toolbar>
+      <My_Toolbar>Sign Up</My_Toolbar>
       <IonContent fullscreen>
         
         <IonList>
@@ -298,4 +298,4 @@ const Sign_In: React.FC = () => {
   );
 };
 
-export default Sign_In;
+export default Sign_Up;

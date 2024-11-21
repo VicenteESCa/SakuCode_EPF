@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import { toBeVisible } from '@testing-library/jest-dom/matchers';
 
 const Search: React.FC=() =>{
-    const dataMomentanea=[
+    const dataMomentanea = [
         "Ruby",
         "C",
         "python",
@@ -19,7 +19,6 @@ const Search: React.FC=() =>{
     ];
 
     const [result,setResult] = useState(dataMomentanea);
-    const [visible, setVisible]= useState(true);
 
     const handldeInput = (e:Event)=>{
         let query="";
@@ -45,14 +44,7 @@ const Search: React.FC=() =>{
                             ))}
                         </IonList>
                     </IonCardHeader>
-                    <IonCard>
-
-                    </IonCard>
                 </IonCard>
-                <IonCard>
-
-                </IonCard>
-               
             </IonContent>
         </IonPage>
     );

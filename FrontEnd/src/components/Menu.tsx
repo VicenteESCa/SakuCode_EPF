@@ -24,7 +24,7 @@ const Menu:React.FC=()=>{
                             <IonItem routerLink='/comment_post'>
                                 <IonLabel>Comentar post</IonLabel>
                             </IonItem>
-                            <IonItem routerLink='/sign_in'>
+                            <IonItem routerLink='/sign_up'>
                                 <IonLabel>Registrarse</IonLabel>
                             </IonItem>
                             <IonItem routerLink='/create_post'>

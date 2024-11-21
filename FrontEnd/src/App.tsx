@@ -35,7 +35,7 @@ import Menu from './components/Menu';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Login from './pages/Login';
-import Sign_In from './pages/Sign_In';
+import Sign_Up from './pages/Sign_up'
 import Edit_Profile from './pages/Edit_Profile';
 import My_Posts from './pages/My_Posts';
 import Create_Post from './pages/Create_Post';
@@ -55,9 +55,10 @@ const App: React.FC = () => (
           <IonPage id="main-content"> {/* Contenido principal de la página */}
             <IonRouterOutlet id='main-content'>
               {/* Definición de rutas */}
-              <Route path="/login" component={Login}></Route>
               <Route path="/home" component={Home}></Route>
-              <Route path="/sign_in" component={Sign_In}></Route>
+              <Route path="/sign_up" component={Sign_Up}></Route>
+              <Route path="/login" component={Login}></Route>
+
               <Route path="/create_post" component={Create_Post}></Route>
               <Route path="/edit_profile" component={Edit_Profile}></Route>
               <Route path="/my_posts" component={My_Posts}></Route>
