@@ -11,9 +11,7 @@ import cors from "cors";
 
 const app=express();
 
-app.use(cors({
-    origin:'http://localhost:8100'
-}))
+app.use(cors())
 
 app.use(morgan('dev'));
 app.use(express.json());

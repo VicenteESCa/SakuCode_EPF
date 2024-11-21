@@ -1,5 +1,5 @@
-import { IonInputPasswordToggle, IonInput, IonAvatar, IonIcon, IonCard, IonButton, IonContent, IonHeader, IonItem, IonPage, IonTextarea, IonTitle, IonToolbar, IonImg } from '@ionic/react';
-import React, { useState } from 'react';
+import { IonText, IonInputPasswordToggle, IonInput, IonAvatar, IonIcon, IonCard, IonButton, IonContent, IonHeader, IonItem, IonPage, IonTextarea, IonTitle, IonToolbar, IonImg } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
 import '../theme/Login.css';
 import { clsx } from 'clsx';
 import My_Toolbar from '../components/My_Toolbar'
@@ -10,16 +10,28 @@ import { useForm } from "react-hook-form";
 
 import regionsData from '../assets/regiones_y_comunas.json';
 
+import { useAuth } from '../context/AuthContext'
+
 const Login: React.FC = () => {
   const history = useHistory();
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [ submiting, setSubmiting ] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    }
+  });
 
-  const [regions] = useState(regionsData);
-  const [error, setError] = useState<string>("");
   const [submitIsValid, setSubmitValid] = useState<boolean>();
+  const { signin, isAuthenticated, errors: signinErrors }  = useAuth();
+
+  if(isAuthenticated){
+    history.push("/home")
+  }
 
   const [isTouched, setIsTouched] = useState(false);
+  
   enum Valid {
     UNDEFINED,
     VALID,
@@ -27,24 +39,16 @@ const Login: React.FC = () => {
   };
 
  const [formData, setFromData] = useState({
-      userName: false,
-      region: '',
-      comuna: '',
-      rut: {valid: Valid.UNDEFINED, value: ''},
       email: {valid: Valid.UNDEFINED, value: ''},
-      password: {valid: Valid.UNDEFINED, value: ''},
-      confirmPassword: {valid: Valid.UNDEFINED, value: ''},
-      termsAndConds: false,
+      password: {valid: Valid.UNDEFINED, value: ''}, 
   });
 
   const MIN_PASSWORD = 6;
-
   const Is_Email = (email: string) => {
     return email.match(
       /^(?=.{1,254}$)(?=.{1,64}@)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
     );
   }
-
   const Validate_Email = (event: any) => {
     const email = (event.target as HTMLTextAreaElement).value;
 
@@ -74,21 +78,6 @@ const Login: React.FC = () => {
       password: { valid: valid, value: password }
     });
   }
-
-  const Validate_Confirm_Password = (event: any) => {
-    const confirmPassword = (event.target as HTMLTextAreaElement).value;
-
-    const valid: Valid = ( confirmPassword == '' ) 
-      ? Valid.UNDEFINED
-      : ( confirmPassword == formData.password.value )
-        ? Valid.VALID
-        : Valid.INVALID;
-
-    setFromData({
-      ...formData,
-      confirmPassword: { valid: valid, value: confirmPassword }
-    });
-  }
   const Update_Form = (name: string, value: any) => {
     setFromData({
       ...formData,
@@ -100,82 +89,71 @@ const Login: React.FC = () => {
     setIsTouched(true);
   };
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(formData);
-    history.push("/my_posts");
-  })
+  useEffect(() => {
+    if ( isAuthenticated ) {
+      history.push("/home");
+    }
+  }, [isAuthenticated, submiting])
 
-  // const Validate_Submit = () =>  {
-  //     console.log(formData);
-  //     history.push("/my_posts");
-  //     // if ( !formData.userName || !formData.region || !formData.comuna || !formData.rut.value ||
-  //     //      !formData.termsAndConds || !formData.email.value || !formData.password.value || !formData.confirmPassword.value  ) {
-  //     //   setSubmitValid(false);
-  //     //   setError("Rellena los campos faltantes.");
-  //     //   error
-  //     // } else if (formData.rut.valid != Valid.VALID || formData.email.valid != Valid.VALID ||
-  //     //            formData.password.valid != Valid.VALID || formData.confirmPassword.valid != Valid.VALID) {
-  //     //   setSubmitValid(false);
-  //     //   setError("algunos campos no son validos.");
-  //     // } else {
-  //     //   setSubmitValid(true);
-  //     //   history.push("/home");
-  //     // }
-  // }
-
+  const onSubmit = handleSubmit((data) => signin(data))
   return (
     <IonPage>
       <My_Toolbar>
         Login
       </My_Toolbar>
       <IonContent fullscreen>
-          <IonCard>
-          <IonItem>
-            <IonTextarea 
-            className={clsx('item-spacing', {
-                'ion-valid'  : formData.email.valid == Valid.VALID,
-                'ion-invalid': formData.email.valid == Valid.INVALID,
-                'ion-touched': isTouched,
-            })}
-            { ... register("email", { required: true }) }
-            fill="solid"
-            label="Email (obligatorio)"
-            labelPlacement="floating"
-            helperText="Ingresa tu email."
-            errorText={ ( errors.email ) ? "Email is required." : "" }
-            onIonInput={(event) => Validate_Email(event)}
-            onIonBlur={() => markTouched()}
-            ></IonTextarea>
-          </IonItem>
-          <IonItem>
-            <IonInput
-             className={clsx('item-spacing', {
-                 'ion-valid'  : formData.password.valid == Valid.VALID,
-                 'ion-invalid': formData.password.valid == Valid.INVALID,
-                 'ion-touched': isTouched,
-             })}
-            { ... register("password", { required: true }) }
-             type="password"
-             label="Contraseña (obligatorio)"
-             fill="solid"
-             labelPlacement="floating"
-             helperText="Ingresa tu contraseña"
-             // errorText="Contraseña invalida"
-             errorText={ ( errors.password ) ? "Password is required." : "" }
-             onIonInput={(event) => Validate_Password(event)}
-             onIonBlur={() => markTouched()}
-            >
-              <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
-            </IonInput>
-          </IonItem>
-          <div className="login-wrapper">
+          <form onSubmit={onSubmit}>
+            <IonCard>
             <IonItem>
-              <IonButton className="my-button" onClick={() => Validate_Submit()}>Registrate</IonButton>
-              {/* <IonButton className="my-button" routerLink='/Home'>Iniciar</IonButton> */}
-              <IonButton className="my-button" routerLink='/Sign_In'>Crear cuenta</IonButton>
+              <IonTextarea 
+              className={clsx('item-spacing', {
+                  'ion-valid'  : formData.email.valid == Valid.VALID,
+                  'ion-invalid': formData.email.valid == Valid.INVALID,
+                  'ion-touched': isTouched,
+              })}
+              { ... register("email", { required: true }) }
+              fill="solid"
+              label="Email (obligatorio)"
+              labelPlacement="floating"
+              helperText="Ingresa tu email."
+              errorText={ ( errors.email ) ? "Email is required." : "" }
+              onIonInput={(event) => Validate_Email(event)}
+              onIonBlur={() => markTouched()}
+              ></IonTextarea>
             </IonItem>
-          </div>
-          </IonCard>
+            <IonItem>
+              <IonInput
+              className={clsx('item-spacing', {
+                  'ion-valid'  : formData.password.valid == Valid.VALID,
+                  'ion-invalid': formData.password.valid == Valid.INVALID,
+                  'ion-touched': isTouched,
+              })}
+              { ... register("password", { required: true }) }
+              type="password"
+              label="Contraseña (obligatorio)"
+              fill="solid"
+              labelPlacement="floating"
+              helperText="Ingresa tu contraseña"
+              // errorText="Contraseña invalida"
+              errorText={ ( errors.password ) ? "Password is required." : "" }
+              onIonInput={(event) => Validate_Password(event)}
+              onIonBlur={() => markTouched()}
+              >
+                <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+              </IonInput>
+            </IonItem>
+            <div className="login-wrapper">
+              <IonItem>
+                <IonButton type="submit" className="my-button">Login</IonButton>
+              </IonItem>
+            </div>
+            {signinErrors.map((error: string) => (
+              <IonItem color="danger">
+                <IonText>{ error }</IonText>
+              </IonItem>
+            ))}
+            </IonCard>
+          </form>
         <Footer/>
       </IonContent>
     </IonPage>

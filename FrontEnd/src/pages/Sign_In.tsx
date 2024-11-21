@@ -4,15 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { clsx } from 'clsx';
 import ExploreContainer from '../components/ExploreContainer';
 import { useHistory } from "react-router-dom";
-//Import del API
-import { User, registerRequest } from '../api/auth'
+
+//Import del context
+import { useAuth } from "../context/AuthContext"
+
 //Css utilizado
 import '../theme/Sign_In.css';
 
 import My_Toolbar from '../components/My_Toolbar'
 import Footer from '../components/Footer';
-
-import { useAuth } from "../context/AuthContext"
 
 import regionsData from '../assets/regiones_y_comunas.json';
 
@@ -122,6 +122,7 @@ const Sign_In: React.FC = () => {
       confirmPassword: { valid: valid, value: confirmPassword }
     });
   }
+
   const Update_Form = (name: string, value: any) => {
     setFromData({
       ...formData,
@@ -145,31 +146,14 @@ const Sign_In: React.FC = () => {
       setError("algunos campos no son validos.");
     } else {
       setSubmitValid(true);
-
-      try {
-        // const user: User = {
-        //   username: formData.userName,
-        //   region: formData.region,
-        //   comuna: formData.comuna,
-        //   rut: formData.rut.value,
-        //   email: formData.email.value,
-        //   password: formData.password.value,
-        // }
-        const response = await signup({
-          username: formData.userName,
-          region: formData.region,
-          comuna: formData.comuna,
-          rut: formData.rut.value,
-          email: formData.email.value,
-          password: formData.password.value,
-        });
-
-        console.log("Registro exitoso: ", response);
-      } catch(error) {
-        console.log("Error de registro", error)
-        setError("Hubo un error al registrar el usuario. Intente nuevamente")
-        setSubmitValid(false)
-      }
+      await signup({
+        username: formData.userName,
+        region: formData.region,
+        comuna: formData.comuna,
+        rut: formData.rut.value,
+        email: formData.email.value,
+        password: formData.password.value,
+      });
     }
   }
 
@@ -234,8 +218,8 @@ const Sign_In: React.FC = () => {
                 'ion-touched': isTouched,
             })}
             >
-              {regions.map(region => (
-                <IonSelectOption value={region.region}>{region.region}</IonSelectOption>
+              {regions.map((region,index) => (
+                <IonSelectOption key={index} value={region.region}>{region.region}</IonSelectOption>
               ))}
             </IonSelect>
           </IonItem>
@@ -250,8 +234,8 @@ const Sign_In: React.FC = () => {
             })}
             >
               {regionsData.filter(r => r.region == formData.region).length !== 0 &&
-               regionsData.filter(r => r.region == formData.region)[0].comunas.map(comuna => (
-                <IonSelectOption value={comuna}>{comuna}</IonSelectOption>
+               regionsData.filter(r => r.region == formData.region)[0].comunas.map((comuna,index) => (
+                <IonSelectOption key={index} value={comuna}>{comuna}</IonSelectOption>
               ))}
             </IonSelect>
           </IonItem>

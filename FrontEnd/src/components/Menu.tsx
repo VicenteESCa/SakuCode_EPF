@@ -4,12 +4,12 @@ import {IonItem, IonHeader, IonMenu, IonToolbar, IonTitle, IonContent, IonPage, 
 const Menu:React.FC=()=>{
     return(
         <IonMenu contentId="main-content">
-        <IonHeader>
-            <IonToolbar className="custom" id="main-content">
-                <IonTitle>Menu</IonTitle>
-            </IonToolbar>
-        </IonHeader>
-            <IonContent  id="main-content">
+            <IonHeader>
+                <IonToolbar className="custom">
+                    <IonTitle>Menu</IonTitle>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent>
                     <IonList>
                         <IonMenuToggle>
                             <IonItem routerLink='/home'> 

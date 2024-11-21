@@ -5,7 +5,7 @@ import {tokenForUser} from '../libs/userJWT.js'
 export const register = async (req, res) => {
     /**Lectura del body en la peticion */
     console.log("body recibido", req.body);
-    const { username, rut, email, region, comuna, password, termsAndConds } = req.body;
+    const { username, rut, email, password, region, comuna } = req.body;
 
     if ( await User.findOne({ rut }) ) { return res.status(400).json(['Rut already in use.']) }
 
@@ -19,7 +19,6 @@ export const register = async (req, res) => {
             region,
             comuna,
             password:hashs,
-            termsAndConds
         });
         
         const savedUser = await newUser.save();
@@ -38,30 +37,14 @@ export const login = async (req, res) => {
     /**Try catch para la asincronia */
     try {
         const user = await User.findOne({ email });
-        if( !user ) return res.status(400).json({
-            message: "User not found."
-        });
+        if( !user ) return res.status(400).json(["User not found."]);
 
         const isMatch = await bcrypt.compare(password, user.password)
-        if(!isMatch) return res.status(400).json({
-            message: "Incorrect password."
-        });
+        if(!isMatch) return res.status(400).json(["Incorrect password."]);
 
         res = tokenForUser(user, res);
-        // const token = await createAccesToken({id: UserFind._id}); 
-        // res.cookie('token', token)
-        
-        // // Solo devuelve un valor definido con el post
-        // res.json({
-        //     id: UserFind._id,
-        //     username: UserFind.username,
-        //     email: UserFind.email,
-        //     createdAt: UserFind.createdAt,
-        //     updatedAt: UserFind.updatedAt,
-        //     message: "Mire sabe quee mire, igual le salio bien ya"
-        // })
     } catch(error) { 
-        res.status(500).json({ message: "Error at login: " + error.message });
+        res.status(500).json([`Error at login: ${error.message}`]);
     }
 }
 
@@ -75,7 +58,7 @@ export const logout = (req,res) =>{
 export const profile = async (req, res) => {
     console.log(req.user);
     const user = await User.findById(req.user.id);
-    if ( !user ) return res.status(400).json({ message: "User not found." });
+    if ( !user ) return res.status(400).json(["User not found."]);
 
     return res.json({
         id: user._id,

@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
-import { User, registerRequest } from '../api/auth'
+import { UserSignUp, UserSignIn, registerRequest, loginRequest } from '../api/auth'
 
 interface AuthContextType {
-    signup: (user: User) => Promise<void>;
-    user: User | null;
+    signin: (user: UserSignIn) => Promise<void>;
+    signup: (user: UserSignUp) => Promise<void>;
+    user: UserSignUp | null;
     isAuthenticated: boolean;
     errors: any;
 }
@@ -23,15 +24,17 @@ type AuthProviderProps = {
 };
   
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [ user, setUser ] = useState<User | null>(null);
+    const [ user, setUser ] = useState<UserSignUp | null>(null);
     const [ isAuthenticated, setIsAuthenticated ] = useState(false);
     const [ errors, setErrors ] = useState([]);
 
-    const signup = async (user: User) => {
+    const signup = async (user: UserSignUp) => {
         try {
             const res = await registerRequest(user);
+
             console.log(res.data);
             setUser(res.data);
+
             setIsAuthenticated(true);
         } catch (error: any) {
             setErrors(error.response.data);
@@ -39,9 +42,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }
 
+    const signin = async (req: UserSignIn) => {
+        try {
+            const res = await loginRequest(req);
+
+            console.log(res.data);
+            setUser(res.data);
+            setIsAuthenticated(true);
+
+        } catch (error: any) {
+            setErrors(error.response.data);
+            console.log("Failed to signin: ", error);
+        }
+    }
+
     return (
         <AuthContext.Provider
             value = {{
+                signin,
                 signup,
                 user,
                 isAuthenticated,

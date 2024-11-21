@@ -43,7 +43,7 @@ const Edit_Profile: React.FC = () => {
       <My_Toolbar>Comment Post</My_Toolbar>
       <IonContent fullscreen>
         <IonLabel>
-            <IonTitle style={{"margin-top": "30px", "margin-left": "30px"}}>Comentarios: { comments.filter(c => c.postID == postID ).length }</IonTitle>
+          <IonTitle style={{"margin-top": "30px", "margin-left": "30px"}}>Comentarios: { comments.filter(c => c.postID == postID ).length }</IonTitle>
         </IonLabel>
 
         {comments.map(item => ( ( item.postID == postID ) &&

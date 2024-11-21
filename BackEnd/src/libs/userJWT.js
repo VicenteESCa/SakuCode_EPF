@@ -17,8 +17,11 @@ export async function tokenForUser(user, res) {
     return res.status(200).json({
         id: user._id,
         username: user.username,
+        rut: user.rut,
         email: user.email,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        region: user.region,
+        comuna: user.comuna,
+        // createdAt: user.createdAt,
+        // updatedAt: user.updatedAt,
     });
 }

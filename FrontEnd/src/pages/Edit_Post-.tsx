@@ -12,7 +12,7 @@ import posts from '../assets/posts.json';
 
 const Edit_Post: React.FC = () => {
   const history = useHistory();
-  const [isTouched, setIsTouched] = useState(false);
+  const [ isTouched, setIsTouched ] = useState(false);
 
   const location = useLocation();
 
@@ -27,10 +27,10 @@ const Edit_Post: React.FC = () => {
     setIsTouched(true);
   };
 
-  const Validate_Submit = () => {
-    console.log("submiting post.");
-    history.push("/home");
-  }
+  // const Validate_Submit = () => {
+  //   console.log("submiting post.");
+  //   history.push("/home");
+  // }
 
   if ( typeof location.state == "number" ) {
     let post = posts.filter(p => p.id == location.state)[0];
